@@ -4,6 +4,7 @@ import android.util.Log
 import br.com.alura.ceep.model.Nota
 import br.com.alura.ceep.webclient.model.NotaRequisicao
 import br.com.alura.ceep.webclient.services.NotaService
+import java.util.function.BiPredicate
 
 private const val TAG = "NotaWebClient"
 
@@ -25,21 +26,28 @@ class NotaWebClient {
         }
     }
 
-    suspend fun salva(nota: Nota) {
+    suspend fun salva(nota: Nota):Boolean {
         try {
             val resposta = notaService.salva(nota.id, NotaRequisicao(
                 titulo = nota.titulo,
                 descricao = nota.descricao,
                 imagem = nota.imagem
             ))
-            if (resposta.isSuccessful) {
-                Log.i(TAG, "salva: nota foi salva com sucesso")
-            } else {
-                Log.i(TAG, "salva: nota não foi salva")
-            }
+            return resposta.isSuccessful
         } catch (e: Exception) {
             Log.e(TAG, "salva: falha ao tentar salvar", e)
         }
+        return false
+    }
+
+    suspend fun remove(id: String): Boolean {
+        try {
+            val resposta = notaService.remove(id)
+            return resposta.isSuccessful
+        } catch (e: Exception) {
+            Log.e(TAG, "remove: falha ao tentar remover", e)
+        }
+        return false
     }
 
 }

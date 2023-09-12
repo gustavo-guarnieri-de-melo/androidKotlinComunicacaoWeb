@@ -12,6 +12,11 @@ data class Nota(
     val titulo: String,
     val descricao: String,
     val imagem: String? = null,
+
     @ColumnInfo(defaultValue = "0")
-    val sincronizada: Boolean = false
+    val sincronizada: Boolean = false,
+
+    @ColumnInfo(defaultValue = "0")
+    val desativada: Boolean = false,
+
 )
